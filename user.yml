@@ -1,0 +1,19 @@
+---
+- name: Set up Ansible user & allow sudo permission
+  hosts: all:!TANDD
+  tasks:
+
+    - name: Create ansible user
+      user:
+        name: ansible
+
+    - name: create a sudo file
+      file:
+        path: /etc/sudoers.d/ansible-service
+        state: touch
+
+   - name: Allow sudo access to ansibel user
+      lineinfile:
+              path: /etc/sudoers.d/ansible-service
+              line: "ansible  ALL=(ALL)  NOPASSWD: ALL"
+              validate:  /usr/sbin/visudo -cf %s 
